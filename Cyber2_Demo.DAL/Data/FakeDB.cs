@@ -1,8 +1,8 @@
-﻿using Cyber2_Demo.API.Context.Models;
+﻿using Cyber2_Demo.Domain.Models;
 
-namespace Cyber2_Demo.API.Context
+namespace Cyber2_Demo.DAL.Data
 {
-    public static class FakeDB
+    public class FakeDB
     {
 
         public static int Compteur = 10;

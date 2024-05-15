@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Cyber2_Demo.DAL\Cyber2_Demo.DAL.csproj" />
-    <ProjectReference Include="..\Cyber2_Demo.Domain\Cyber2_Demo.Domain.csproj" />
-  </ItemGroup>
-
 </Project>
