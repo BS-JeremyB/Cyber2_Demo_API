@@ -21,12 +21,18 @@ namespace Cyber2_Demo.BLL.Services
 
         public Utilisateur? Create(Utilisateur utilisateur)
         {
-            throw new NotImplementedException();
+            return _repository.Create(utilisateur);
         }
 
-        public bool Delete(Utilisateur utilisateur)
+        public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            Utilisateur? utilisateurDeLaDB = _repository.GetById(id);
+            if(utilisateurDeLaDB is not null )
+            {
+                return _repository.Delete(utilisateurDeLaDB);
+            }
+
+            return false;
         }
 
         public IEnumerable<Utilisateur> GetAll()
@@ -41,7 +47,20 @@ namespace Cyber2_Demo.BLL.Services
 
         public Utilisateur? Update(Utilisateur utilisateur)
         {
-            throw new NotImplementedException();
+
+            Utilisateur? UtilisateurDeLaDB = _repository.GetById(utilisateur.Id);
+
+            if(UtilisateurDeLaDB is not null)
+            {
+                UtilisateurDeLaDB.Email = utilisateur.Email;
+                UtilisateurDeLaDB.Nom = utilisateur.Nom;
+                UtilisateurDeLaDB.Prenom = utilisateur.Prenom;
+
+                return _repository.Update(UtilisateurDeLaDB);
+
+            }
+
+            return null;
         }
     }
 }

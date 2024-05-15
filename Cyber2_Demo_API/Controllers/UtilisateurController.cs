@@ -45,77 +45,49 @@ namespace Cyber2_Demo.API.Controllers
         }
 
 
-        //[HttpPut("{id:int}")]
-        //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Utilisateur))]
-        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(int))]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //public ActionResult<Utilisateur> Update(int id, Utilisateur user)
-        //{
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Utilisateur))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(int))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<Utilisateur> Update(int id, Utilisateur user)
+        {
+            user.Id = id;
+            Utilisateur? utilisateur = _service.Update(user);
 
-        //    List<Utilisateur> utilisateurs = FakeDB.utilisateurs;
-        //    Utilisateur? utilisateur = utilisateurs.SingleOrDefault(u => u.Id == id);
-        //    if(utilisateur is null)
-        //    {
-        //        return NotFound(id);
-        //    }
-        //    try
-        //    {
-        //        int pos = utilisateurs.IndexOf(utilisateur);
-        //        utilisateur.Email = user.Email;
-        //        utilisateur.Prenom = user.Prenom;
-        //        utilisateur.Nom = user.Nom;
+            if(utilisateur is not null)
+            {
+                return Ok(utilisateur);
+            }
 
-        //        utilisateurs[pos] = utilisateur;
+            return NotFound(id);
+        }
 
+        [HttpDelete]
+        [Route("{id:int}")] // Annotation alternative pour indiquer la route
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(int))]
+        public ActionResult Delete(int id)
+        {
+            bool delete = _service.Delete(id);
 
-        //    }catch(Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
+            return delete ? NoContent() : NotFound(id);
 
-        //    return Ok(utilisateur);
+        }
 
-        //}
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Utilisateur))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        //[HttpDelete]
-        //[Route("{id:int}")] // Annotation alternative pour indiquer la route
-        //[ProducesResponseType(StatusCodes.Status204NoContent)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(int))]
-        //public ActionResult Delete(int id)
-        //{
-        //    Utilisateur? utilisateur = FakeDB.utilisateurs.SingleOrDefault(u => u.Id == id);
-        //    if(utilisateur is not null )
-        //    {
-        //        FakeDB.utilisateurs.Remove(utilisateur);
-        //        return NoContent();
-        //    }
+        public ActionResult<Utilisateur> Create(CreateUtilisateurDTO utilisateurDTO)
+        {
+            Utilisateur? utilisateur = _service.Create(utilisateurDTO.ToUtilisateur());
 
-        //    return NotFound(id);
+            if(utilisateur is not null)
+            {
+                return CreatedAtAction(nameof(GetById), new { id = utilisateur.Id }, utilisateur);
+            }
 
-        //}
-
-        //[HttpPost]
-        //[ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Utilisateur))]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-
-        //public ActionResult<Utilisateur> Create(CreateUtilisateurDTO utilisateurDTO)
-        //{
-        //    try
-        //    {
-        //        Utilisateur utilisateur = utilisateurDTO.ToUtilisateur();
-        //        utilisateur.Id = ++FakeDB.Compteur;
-        //        FakeDB.utilisateurs.Add(utilisateur);
-
-        //        return CreatedAtAction(nameof(GetOne), new { id = utilisateur.Id }, utilisateur);
-        //        //return Created($"api/Utilisateur/{utilisateur.Id}", utilisateur);
-        //    }catch(Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);   
-        //    }
-
-
-
-
-        //}
+            return BadRequest();
+        }
     }
 }

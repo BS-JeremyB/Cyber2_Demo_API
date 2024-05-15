@@ -1,11 +1,7 @@
 ﻿using Cyber2_Demo.DAL.Data;
 using Cyber2_Demo.DAL.Interfaces;
 using Cyber2_Demo.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Cyber2_Demo.DAL.Repositories
 {
@@ -13,12 +9,15 @@ namespace Cyber2_Demo.DAL.Repositories
     {
         public Utilisateur Create(Utilisateur utilisateur)
         {
-            throw new NotImplementedException();
+            utilisateur.Id = ++FakeDB.Compteur;
+            FakeDB.utilisateurs.Add(utilisateur);
+
+            return utilisateur;
         }
 
         public bool Delete(Utilisateur utilisateur)
         {
-            throw new NotImplementedException();
+            return FakeDB.utilisateurs.Remove(utilisateur);
         }
 
         public IEnumerable<Utilisateur> GetAll()
@@ -34,7 +33,12 @@ namespace Cyber2_Demo.DAL.Repositories
 
         public Utilisateur Update(Utilisateur utilisateur)
         {
-            throw new NotImplementedException();
+
+            // Inutile
+            int position = FakeDB.utilisateurs.IndexOf(utilisateur);
+            FakeDB.utilisateurs[position] = utilisateur;
+
+            return utilisateur;
         }
     }
 }
