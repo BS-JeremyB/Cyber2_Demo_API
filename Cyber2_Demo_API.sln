@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cyber2_Demo.DAL", "Cyber2_D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cyber2_Demo.Domain", "Cyber2_Demo.Domain\Cyber2_Demo.Domain.csproj", "{3D147396-0B09-49AB-AD5D-013002BE240C}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Cyber2_Demo.DB", "Cyber2_Demo.DB\Cyber2_Demo.DB.sqlproj", "{43460F61-3617-469A-B246-86FF61334003}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Cyber2_Demo.DB", "Cyber2_Demo.DB\Cyber2_Demo.DB.sqlproj", "{62C456AD-EE1D-451A-BB93-796774EB2DB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,12 +35,12 @@ Global
 		{3D147396-0B09-49AB-AD5D-013002BE240C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D147396-0B09-49AB-AD5D-013002BE240C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D147396-0B09-49AB-AD5D-013002BE240C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43460F61-3617-469A-B246-86FF61334003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43460F61-3617-469A-B246-86FF61334003}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43460F61-3617-469A-B246-86FF61334003}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{43460F61-3617-469A-B246-86FF61334003}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43460F61-3617-469A-B246-86FF61334003}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43460F61-3617-469A-B246-86FF61334003}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{62C456AD-EE1D-451A-BB93-796774EB2DB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C456AD-EE1D-451A-BB93-796774EB2DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C456AD-EE1D-451A-BB93-796774EB2DB5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{62C456AD-EE1D-451A-BB93-796774EB2DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C456AD-EE1D-451A-BB93-796774EB2DB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C456AD-EE1D-451A-BB93-796774EB2DB5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -13,6 +13,8 @@ namespace Cyber2_Demo.API.Context.Mapper
                 Email = utilisateurDTO.Email,
                 Prenom = utilisateurDTO.Prenom,
                 Nom = utilisateurDTO.Nom,
+                Username = utilisateurDTO.Username,
+                Password = utilisateurDTO.Password,
             };
         }
 

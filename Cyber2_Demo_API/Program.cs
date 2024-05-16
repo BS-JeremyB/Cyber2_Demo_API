@@ -13,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Configuration des Injections de dépendances
 builder.Services.AddScoped<IUtilisateurService, UtilisateurService>();
-builder.Services.AddScoped<IUtilisateurRepository, UtilisateurRepository>();
+builder.Services.AddScoped<IUtilisateurRepository, UtilisateurADORepository>();
 
 
 

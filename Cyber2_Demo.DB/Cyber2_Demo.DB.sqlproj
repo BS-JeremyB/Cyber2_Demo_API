@@ -6,8 +6,8 @@
     <Name>Cyber2_Demo.DB</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{43460f61-3617-469a-b246-86ff61334003}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <ProjectGuid>{62c456ad-ee1d-451a-bb93-796774eb2db5}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -57,6 +57,14 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
-    <Folder Include="NewFolder1\" />
+    <Folder Include="Stored Procedures" />
+    <Folder Include="Functions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\Utilisateur.sql" />
+    <Build Include="Tables\BlogPost.sql" />
+    <Build Include="Stored Procedures\CreationUtilisateur.sql" />
+    <Build Include="Functions\GetPepper.sql" />
+    <Build Include="Stored Procedures\Login.sql" />
   </ItemGroup>
 </Project>
