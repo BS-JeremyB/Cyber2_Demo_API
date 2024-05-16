@@ -3,6 +3,7 @@ using Cyber2_Demo.Domain.Models;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,12 +49,72 @@ namespace Cyber2_Demo.DAL.Repositories
 
         public IEnumerable<Utilisateur> GetAll()
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM Utilisateur";
+                    command.CommandType = System.Data.CommandType.Text;
+
+                    List<Utilisateur> utilisateurs = new List<Utilisateur>();
+
+                    connection.Open();
+
+                    using(SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            utilisateurs.Add(new Utilisateur
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Username = Convert.ToString(reader["Username"]),
+                                Nom = Convert.ToString(reader["Nom"]),
+                                Prenom = Convert.ToString(reader["Prenom"]),
+                                Email = Convert.ToString(reader["Email"]),
+                                Salt = Convert.ToString(reader["Salt"])
+                            });
+                        }
+                    }
+
+                    return utilisateurs;
+                }
+            }
         }
 
         public Utilisateur? GetById(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT * FROM Utilisateur WHERE Id = @Id";
+                    command.CommandType = System.Data.CommandType.Text;
+
+                    
+                    command.Parameters.AddWithValue("@Id", id);
+
+                    Utilisateur? utilisateur = null;
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            utilisateur = new Utilisateur
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Username = Convert.ToString(reader["Username"]),
+                                Nom = Convert.ToString(reader["Nom"]),
+                                Prenom = Convert.ToString(reader["Prenom"]),
+                                Email = Convert.ToString(reader["Email"]),
+                                Salt = Convert.ToString(reader["Salt"])
+                            };
+                        }
+                    }
+
+                    return utilisateur;
+                }
+            }
         }
 
         public Utilisateur Update(Utilisateur utilisateur)
