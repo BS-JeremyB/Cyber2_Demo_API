@@ -228,5 +228,47 @@ namespace Cyber2_Demo.DAL.Repositories
                 return false;
             }
         }
+
+        public Utilisateur Login(string username, string password)
+        {
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    using(SqlCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText = "Login";
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Username", username);
+                        command.Parameters.AddWithValue("@Password", password);
+
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Utilisateur
+                                {
+                                    Id = Convert.ToInt32(reader["Id"]),
+                                    Username = (reader["Username"] is DBNull) ? null : Convert.ToString(reader["Username"]),
+                                    Nom = Convert.ToString(reader["Nom"]),
+                                    Prenom = Convert.ToString(reader["Prenom"]),
+                                    Email = Convert.ToString(reader["Email"]),
+                                };
+                            }
+                        }
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -14,10 +14,12 @@ namespace Cyber2_Demo.BLL.Services
     public class UtilisateurService : IUtilisateurService
     {
         private readonly IUtilisateurRepository _repository;
+        private readonly IAuthService _auth;
 
-        public UtilisateurService(IUtilisateurRepository repository)
+        public UtilisateurService(IUtilisateurRepository repository, IAuthService auth)
         {
             _repository = repository;
+            _auth = auth;
         }
 
         public Utilisateur? Create(Utilisateur utilisateur)
@@ -48,6 +50,18 @@ namespace Cyber2_Demo.BLL.Services
         public Utilisateur? GetById(int id)
         {
             return _repository.GetById(id);
+        }
+
+        public string Login(string username, string password)
+        {
+            Utilisateur? utilisateur = _repository.Login(username, password);
+
+            if(utilisateur is not null)
+            {
+                return _auth.GenerateToken(utilisateur);
+            }
+
+            return null;
         }
 
         public Utilisateur? Update(Utilisateur utilisateur)

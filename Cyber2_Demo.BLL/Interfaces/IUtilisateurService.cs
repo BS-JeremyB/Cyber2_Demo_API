@@ -10,5 +10,6 @@ namespace Cyber2_Demo.BLL.Interfaces
         public bool Delete(int id);
         public Utilisateur? GetById(int id);
         public IEnumerable<Utilisateur> GetAll();
+        public string Login(string username, string password);
     }
 }

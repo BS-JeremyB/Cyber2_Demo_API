@@ -116,5 +116,23 @@ namespace Cyber2_Demo.API.Controllers
             return BadRequest();
 
         }
+
+
+        [HttpPost("login")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<Utilisateur> Login([FromBody] UtilisateurLoginDTO login)
+        {
+
+            string? token = _service.Login(login.Username, login.Password);
+
+            if (token is not null)
+            {
+                return Ok(token);
+            }
+
+            return BadRequest(StatusCodes.Status400BadRequest);
+        }
     }
 }

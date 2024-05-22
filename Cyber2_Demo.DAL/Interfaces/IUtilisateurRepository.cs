@@ -16,5 +16,7 @@ namespace Cyber2_Demo.DAL.Interfaces
         public Utilisateur? GetById(int id);
         public IEnumerable<Utilisateur> GetAll();
         public bool Exist(Utilisateur utilisateur);
+
+        public Utilisateur Login(string username, string password);
     }
 }

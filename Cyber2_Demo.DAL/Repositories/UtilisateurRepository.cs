@@ -36,6 +36,11 @@ namespace Cyber2_Demo.DAL.Repositories
             return FakeDB.utilisateurs.SingleOrDefault(u => u.Id == id);
         }
 
+        public Utilisateur Login(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
+
         public Utilisateur Update(Utilisateur utilisateur)
         {
 
