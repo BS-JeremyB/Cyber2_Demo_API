@@ -44,7 +44,21 @@ namespace Cyber2_Demo.DAL.Repositories
 
         public bool Delete(Utilisateur utilisateur)
         {
-            throw new NotImplementedException();
+            using(SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                using(SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "DELETE FROM Utilisateur WHERE Id = @Id";
+                    command.CommandType = CommandType.Text;
+
+                    command.Parameters.AddWithValue("@Id", utilisateur.Id);
+
+                    connection.Open();
+                    int nbrLigne = command.ExecuteNonQuery();
+
+                    return nbrLigne > 0 ? true : false;
+                }
+            }
         }
 
         public IEnumerable<Utilisateur> GetAll()
@@ -54,7 +68,7 @@ namespace Cyber2_Demo.DAL.Repositories
                 using (SqlCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT * FROM Utilisateur";
-                    command.CommandType = System.Data.CommandType.Text;
+                    command.CommandType = CommandType.Text;
 
                     List<Utilisateur> utilisateurs = new List<Utilisateur>();
 
@@ -88,7 +102,7 @@ namespace Cyber2_Demo.DAL.Repositories
                 using (SqlCommand command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT * FROM Utilisateur WHERE Id = @Id";
-                    command.CommandType = System.Data.CommandType.Text;
+                    command.CommandType = CommandType.Text;
 
                     
                     command.Parameters.AddWithValue("@Id", id);
@@ -103,7 +117,8 @@ namespace Cyber2_Demo.DAL.Repositories
                             utilisateur = new Utilisateur
                             {
                                 Id = Convert.ToInt32(reader["Id"]),
-                                Username = Convert.ToString(reader["Username"]),
+                                Username = (reader["Username"] is DBNull) ? null : Convert.ToString(reader["Username"]),
+                                //Username = Convert.ToString(reader["Username"]),
                                 Nom = Convert.ToString(reader["Nom"]),
                                 Prenom = Convert.ToString(reader["Prenom"]),
                                 Email = Convert.ToString(reader["Email"]),
@@ -119,7 +134,52 @@ namespace Cyber2_Demo.DAL.Repositories
 
         public Utilisateur Update(Utilisateur utilisateur)
         {
-            throw new NotImplementedException();
+            using(SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using(SqlTransaction transaction = connection.BeginTransaction())
+                {
+
+                    using(SqlCommand command = connection.CreateCommand())
+                    {
+
+                        command.CommandText = "UPDATE Utilisateur SET Nom = @Nom, Prenom = @Prenom, Email = @Email, Username = @Username WHERE Id = @Id";
+                        command.CommandType = CommandType.Text;
+                        command.Transaction = transaction;
+
+                        command.Parameters.AddWithValue("@Nom", utilisateur.Nom);
+                        command.Parameters.AddWithValue("@Prenom", utilisateur.Prenom);
+                        command.Parameters.AddWithValue("@Email", utilisateur.Email);
+                        command.Parameters.AddWithValue("@Username", utilisateur.Username);
+                        command.Parameters.AddWithValue("@Id", utilisateur.Id);
+                        int nbrLigne = 0;
+                        try
+                        {
+                            nbrLigne = command.ExecuteNonQuery();
+                            if(nbrLigne > 1)
+                            {
+                                throw new InvalidOperationException();
+                            }
+                            else
+                            {
+                                transaction.Commit();
+                            }
+
+                        }catch(Exception e)
+                        {
+                            transaction.Rollback();
+                        }
+
+                        return nbrLigne == 1 ? utilisateur : null;
+
+                        
+
+                        
+                    }
+                }
+
+                
+            }
         }
     }
 }

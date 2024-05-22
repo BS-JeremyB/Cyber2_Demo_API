@@ -55,6 +55,7 @@ namespace Cyber2_Demo.BLL.Services
                 UtilisateurDeLaDB.Email = utilisateur.Email;
                 UtilisateurDeLaDB.Nom = utilisateur.Nom;
                 UtilisateurDeLaDB.Prenom = utilisateur.Prenom;
+                UtilisateurDeLaDB.Username = utilisateur.Username;
 
                 return _repository.Update(UtilisateurDeLaDB);
 
