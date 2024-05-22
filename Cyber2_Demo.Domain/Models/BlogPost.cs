@@ -11,6 +11,6 @@ namespace Cyber2_Demo.Domain.Models
         public int Id { get; set; }
         public string Titre { get; set; }
         public string Contenu { get; set; }
-        public int Utilisateur_Id { get; set; }
+        public Utilisateur Auteur { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Cyber2_Demo.API.DTO
+﻿namespace Cyber2_Demo.API.DTO.Utilisateur
 {
     public class UtilisateurListDTO
     {

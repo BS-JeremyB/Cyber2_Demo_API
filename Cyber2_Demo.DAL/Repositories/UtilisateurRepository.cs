@@ -20,6 +20,11 @@ namespace Cyber2_Demo.DAL.Repositories
             return FakeDB.utilisateurs.Remove(utilisateur);
         }
 
+        public bool Exist(Utilisateur utilisateur)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Utilisateur> GetAll()
         {
 

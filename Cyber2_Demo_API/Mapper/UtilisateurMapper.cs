@@ -1,5 +1,4 @@
-﻿using Cyber2_Demo.API.Context.Models.DTO;
-using Cyber2_Demo.API.DTO;
+﻿using Cyber2_Demo.API.DTO.Utilisateur;
 using Cyber2_Demo.Domain.Models;
 
 namespace Cyber2_Demo.API.Context.Mapper
@@ -15,6 +14,17 @@ namespace Cyber2_Demo.API.Context.Mapper
                 Nom = utilisateurDTO.Nom,
                 Username = utilisateurDTO.Username,
                 Password = utilisateurDTO.Password,
+            };
+        }
+
+        public static Utilisateur ToUtilisateur(this UpdateUtilisateurDTO utilisateurDTO)
+        {
+            return new Utilisateur
+            {
+                Email = utilisateurDTO.Email,
+                Prenom = utilisateurDTO.Prenom,
+                Nom = utilisateurDTO.Nom,
+                Username = utilisateurDTO.Username,
             };
         }
 
@@ -37,6 +47,19 @@ namespace Cyber2_Demo.API.Context.Mapper
 
             return utilisateursDTO;
 
+        }
+
+        public static UtilisateurDetailDTO ToDetailDTO(this Utilisateur utilisateur)
+        {
+
+            return new UtilisateurDetailDTO
+            {
+                Id = utilisateur.Id,
+                Email = utilisateur.Email,
+                Prenom = utilisateur.Prenom,
+                Nom = utilisateur.Nom,
+                Username = utilisateur.Username,
+            };
         }
 
     }

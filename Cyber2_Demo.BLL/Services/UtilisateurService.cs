@@ -1,4 +1,5 @@
-﻿using Cyber2_Demo.BLL.Interfaces;
+﻿using Cyber2_Demo.BLL.CustomExceptions;
+using Cyber2_Demo.BLL.Interfaces;
 using Cyber2_Demo.DAL.Interfaces;
 using Cyber2_Demo.DAL.Repositories;
 using Cyber2_Demo.Domain.Models;
@@ -21,6 +22,10 @@ namespace Cyber2_Demo.BLL.Services
 
         public Utilisateur? Create(Utilisateur utilisateur)
         {
+            if (_repository.Exist(utilisateur))
+            {
+                throw new AlreadyExistException("Le username ou l'email existe déjà");
+            }
             return _repository.Create(utilisateur);
         }
 
@@ -47,7 +52,10 @@ namespace Cyber2_Demo.BLL.Services
 
         public Utilisateur? Update(Utilisateur utilisateur)
         {
-
+            if (_repository.Exist(utilisateur))
+            {
+                throw new AlreadyExistException("Le username ou l'email existe déjà");
+            }
             Utilisateur? UtilisateurDeLaDB = _repository.GetById(utilisateur.Id);
 
             if(UtilisateurDeLaDB is not null)

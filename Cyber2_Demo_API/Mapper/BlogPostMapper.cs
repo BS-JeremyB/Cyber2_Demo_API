@@ -1,0 +1,30 @@
+﻿using Cyber2_Demo.API.Context.Mapper;
+using Cyber2_Demo.API.DTO.BlogPost;
+using Cyber2_Demo.Domain.Models;
+
+namespace Cyber2_Demo.API.Mapper
+{
+    public static class BlogPostMapper
+    {
+        public static BlogPost ToBlogPost(this CreateBlogPostDTO post, Utilisateur utilisateur)
+        {
+            return new BlogPost
+            {
+                Contenu = post.Contenu,
+                Titre = post.Titre,
+                Auteur = utilisateur
+            };
+        }
+
+        public static BlogPostDetailDTO ToBlogPostDetail(this BlogPost post)
+        {
+            return new BlogPostDetailDTO
+            {
+                Id = post.Id,
+                Contenu = post.Contenu,
+                Titre = post.Titre,
+                Auteur = post.Auteur.ToDetailDTO()
+            };
+        }
+    }
+}

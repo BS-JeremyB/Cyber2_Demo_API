@@ -1,6 +1,6 @@
 ﻿using Cyber2_Demo.API.Context.Mapper;
-using Cyber2_Demo.API.Context.Models.DTO;
-using Cyber2_Demo.API.DTO;
+using Cyber2_Demo.API.DTO.Utilisateur;
+using Cyber2_Demo.BLL.CustomExceptions;
 using Cyber2_Demo.BLL.Interfaces;
 using Cyber2_Demo.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -30,11 +30,11 @@ namespace Cyber2_Demo.API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Utilisateur))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UtilisateurDetailDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(int))]
-        public ActionResult<Utilisateur> GetById(int id)
+        public ActionResult<UtilisateurDetailDTO> GetById(int id)
         {
-            Utilisateur utilisateur = _service.GetById(id);
+            UtilisateurDetailDTO utilisateur = _service.GetById(id)?.ToDetailDTO();
             if (utilisateur is not null)
             {
                 return Ok(utilisateur);
@@ -46,20 +46,34 @@ namespace Cyber2_Demo.API.Controllers
 
 
         [HttpPut("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Utilisateur))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UtilisateurDetailDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(int))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<Utilisateur> Update(int id, Utilisateur user)
+        public ActionResult<UtilisateurDetailDTO> Update(int id, UpdateUtilisateurDTO user)
         {
-            user.Id = id;
-            Utilisateur? utilisateur = _service.Update(user);
-
-            if(utilisateur is not null)
+            if (ModelState.IsValid)
             {
-                return Ok(utilisateur);
-            }
+                Utilisateur utilisateurToUpdate = user.ToUtilisateur();
+                utilisateurToUpdate.Id = id;
 
-            return NotFound(id);
+                try
+                {
+
+                    UtilisateurDetailDTO? utilisateur = _service.Update(utilisateurToUpdate)?.ToDetailDTO();
+
+                    if(utilisateur is not null)
+                    {
+                        return Ok(utilisateur);
+                    }
+                }catch(AlreadyExistException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+
+                return NotFound(id);
+
+            }
+            return BadRequest(ModelState);
         }
 
         [HttpDelete]
@@ -75,19 +89,32 @@ namespace Cyber2_Demo.API.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Utilisateur))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UtilisateurDetailDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        public ActionResult<Utilisateur> Create(CreateUtilisateurDTO utilisateurDTO)
+        public ActionResult<UtilisateurDetailDTO> Create(CreateUtilisateurDTO utilisateurDTO)
         {
-            Utilisateur? utilisateur = _service.Create(utilisateurDTO.ToUtilisateur());
 
-            if(utilisateur is not null)
+            if (ModelState.IsValid)
             {
-                return CreatedAtAction(nameof(GetById), new { id = utilisateur.Id }, utilisateur);
+                try
+                {
+
+                    UtilisateurDetailDTO? utilisateur = _service.Create(utilisateurDTO.ToUtilisateur())?.ToDetailDTO();
+
+                    if(utilisateur is not null)
+                    {
+                        return CreatedAtAction(nameof(GetById), new { id = utilisateur.Id }, utilisateur);
+                    }
+                }catch(AlreadyExistException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+
             }
 
             return BadRequest();
+
         }
     }
 }

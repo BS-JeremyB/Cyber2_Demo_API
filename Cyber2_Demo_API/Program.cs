@@ -14,6 +14,8 @@ builder.Services.AddSwaggerGen();
 // Configuration des Injections de dépendances
 builder.Services.AddScoped<IUtilisateurService, UtilisateurService>();
 builder.Services.AddScoped<IUtilisateurRepository, UtilisateurADORepository>();
+builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
+builder.Services.AddScoped<IBlogPostService, BlogPostService>();
 
 
 
