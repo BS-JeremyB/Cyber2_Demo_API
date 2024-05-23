@@ -26,5 +26,16 @@ namespace Cyber2_Demo.API.Mapper
                 Auteur = post.Auteur.ToDetailDTO()
             };
         }
+
+        public static IEnumerable<BlogPostDetailDTO> ToBlogPostList(this IEnumerable<BlogPost> posts)
+        {
+            List<BlogPostDetailDTO> postsDetail = new List<BlogPostDetailDTO>();
+            foreach(BlogPost post in posts)
+            {
+                postsDetail.Add(post.ToBlogPostDetail());
+            }
+
+            return postsDetail;
+        }
     }
 }

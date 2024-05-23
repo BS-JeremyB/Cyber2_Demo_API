@@ -49,7 +49,29 @@ namespace Cyber2_Demo.DAL.Repositories
 
         public bool Delete(BlogPost blogPost)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText = "DELETE FROM BlogPost WHERE Id = @Id";
+                        command.CommandType = CommandType.Text;
+
+                        command.Parameters.AddWithValue("@Id", blogPost.Id);
+
+                        connection.Open();
+                        int nbrLigne = (int)command.ExecuteNonQuery();
+
+                        return nbrLigne > 0;
+                    }
+                }
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
 
         public BlogPost? GetById(int id)
@@ -99,7 +121,46 @@ namespace Cyber2_Demo.DAL.Repositories
 
         public IEnumerable<BlogPost> GetAll()
         {
-            throw new NotImplementedException();
+            List<BlogPost> posts = new List<BlogPost>();
+            try
+            {
+                using(SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    using(SqlCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText = "SELECT B.*, U.Username, U.Nom, U.Prenom, U.Email FROM BlogPost B JOIN Utilisateur U ON B.Utilisateur_Id = U.Id";
+                        command.CommandType = CommandType.Text;
+
+                        connection.Open();
+                        using(SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                posts.Add(new BlogPost
+                                {
+                                    Id = (int)reader["Id"],
+                                    Titre = reader["Titre"].ToString(),
+                                    Contenu = reader["Contenu"].ToString(),
+                                    Auteur = new Utilisateur
+                                    {
+                                        Id = Convert.ToInt32(reader["Utilisateur_Id"]),
+                                        Username = Convert.ToString(reader["Username"]),
+                                        Nom = Convert.ToString(reader["Nom"]),
+                                        Prenom = Convert.ToString(reader["Prenom"]),
+                                        Email = Convert.ToString(reader["Email"]),
+                                    }
+                                });
+                            }
+
+                            return posts;
+                        }
+                    }
+                }
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return posts;
+            }
         }
     }
 }

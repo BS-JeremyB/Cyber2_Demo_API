@@ -38,11 +38,19 @@ namespace Cyber2_Demo.API.Controllers
             {
                 BlogPost? newPost = _blogPostService.Create(post.ToBlogPost(utilisateur));
 
-                return Ok(newPost.ToBlogPostDetail());
+                return CreatedAtAction("GetById", new { id = newPost.Id}, newPost.ToBlogPostDetail());
 
             }
 
             return BadRequest();
+
+        }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<BlogPostDetailDTO>))]
+        public ActionResult<IEnumerable<BlogPostDetailDTO>> GetAll()
+        {
+            return Ok(_blogPostService.GetAll().ToBlogPostList());
 
         }
 
@@ -59,6 +67,18 @@ namespace Cyber2_Demo.API.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpDelete]
+        [Route("{id:int}")] // Annotation alternative pour indiquer la route
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(int))]
+        public ActionResult Delete(int id)
+        {
+            bool delete = _blogPostService.Delete(id);
+
+            return delete ? NoContent() : NotFound(id);
+
         }
     }
 }

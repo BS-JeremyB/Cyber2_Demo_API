@@ -26,12 +26,18 @@ namespace Cyber2_Demo.BLL.Services
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            BlogPost? post = _blogRepository.GetById(id);
+
+            if(post is not null)
+            {
+                return _blogRepository.Delete(post);
+            }
+            return false;
         }
 
         public IEnumerable<BlogPost> GetAll()
         {
-            throw new NotImplementedException();
+            return _blogRepository.GetAll();
         }
 
         public BlogPost? GetById(int id)
