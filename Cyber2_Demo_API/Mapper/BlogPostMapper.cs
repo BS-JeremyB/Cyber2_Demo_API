@@ -16,6 +16,15 @@ namespace Cyber2_Demo.API.Mapper
             };
         }
 
+        public static BlogPost ToBlogPost(this CreateBlogPostDTO post)
+        {
+            return new BlogPost
+            {
+                Contenu = post.Contenu,
+                Titre = post.Titre,
+            };
+        }
+
         public static BlogPostDetailDTO ToBlogPostDetail(this BlogPost post)
         {
             return new BlogPostDetailDTO

@@ -47,7 +47,17 @@ namespace Cyber2_Demo.BLL.Services
 
         public BlogPost? Update(BlogPost blogPost)
         {
-            throw new NotImplementedException();
+            BlogPost? postToUpdate = _blogRepository.GetById(blogPost.Id);
+
+            if (postToUpdate is not null)
+            {
+
+                postToUpdate.Contenu = blogPost.Contenu;
+                postToUpdate.Titre = blogPost.Titre;
+
+                return _blogRepository.Update(postToUpdate);
+            }
+            return null;
         }
     }
 }

@@ -44,7 +44,31 @@ namespace Cyber2_Demo.DAL.Repositories
 
         public BlogPost Update(BlogPost blogPost)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using(SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    using (SqlCommand command = connection.CreateCommand())
+                    {
+                        command.CommandText = "UPDATE BlogPost SET Titre = @Titre, Contenu = @Contenu WHERE Id = @Id";
+                        command.CommandType = CommandType.Text;
+
+                        command.Parameters.AddWithValue("@Titre", blogPost.Titre);
+                        command.Parameters.AddWithValue("@Contenu", blogPost.Contenu);
+                        command.Parameters.AddWithValue("@Id", blogPost.Id);
+
+                        connection.Open();
+                        int nbrLigne = (int)command.ExecuteNonQuery();
+
+                        return nbrLigne > 0 ? blogPost : null;
+                        
+                    }
+                }
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         public bool Delete(BlogPost blogPost)

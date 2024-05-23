@@ -1,6 +1,8 @@
-﻿using Cyber2_Demo.API.DTO.BlogPost;
+﻿using Cyber2_Demo.API.Context.Mapper;
+using Cyber2_Demo.API.DTO.BlogPost;
 using Cyber2_Demo.API.DTO.Utilisateur;
 using Cyber2_Demo.API.Mapper;
+using Cyber2_Demo.BLL.CustomExceptions;
 using Cyber2_Demo.BLL.Interfaces;
 using Cyber2_Demo.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -79,6 +81,36 @@ namespace Cyber2_Demo.API.Controllers
 
             return delete ? NoContent() : NotFound(id);
 
+        }
+
+
+        [Authorize]
+        [HttpPut("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(BlogPostDetailDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(int))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public ActionResult<BlogPostDetailDTO> Update(int id, CreateBlogPostDTO post)
+        {
+            Claim? idClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            Utilisateur? auteur = _utilisateurService.GetById(Convert.ToInt32(idClaim.Value));
+            BlogPost? postToCheckAuthor = _blogPostService.GetById(id);
+            if (ModelState.IsValid && auteur.Id == postToCheckAuthor.Auteur.Id)
+            {
+                BlogPost? postToUpdate = post.ToBlogPost();
+                postToUpdate.Id = id;
+
+                BlogPostDetailDTO? postUpdated = _blogPostService.Update(postToUpdate)?.ToBlogPostDetail();
+
+                if (postUpdated is not null)
+                {
+                    return Ok(postUpdated);
+                }
+
+
+                return NotFound(id);
+
+            }
+            return BadRequest(ModelState);
         }
     }
 }
